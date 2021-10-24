@@ -1,18 +1,19 @@
-
-
-const LOAD_PHOTOS = 'feeds/LOAD_PHOTOS'
+const SET_PROFILE = 'feeds/SET_PROFILE'
 
 const initialState = {
-    posts: []
+    first_name: null,
+    email: null,
+    avatar: null
 }
 
 const profileReducer = (state=initialState, action) => {
-    
     switch(action.type) {
-        case LOAD_PHOTOS:
+        case SET_PROFILE:
             return {
                 ...state,
-                posts: [newPost, ...state.posts],
+                first_name: action.first_name,
+                email: action.email,
+                avatar: action.avatar
             }
 
         default:
@@ -20,12 +21,14 @@ const profileReducer = (state=initialState, action) => {
     }
 }
 
-export const addNewPost = (text) => ({type: LOAD_PHOTOS, text})
+export const setProfile = ({email, first_name, avatar}) => (
+    {type: SET_PROFILE, email: email, first_name: first_name, avatar: avatar}
+)
 
 export const setUserProfile = (userId) => {
     return async (dispatch) => {
         const response = await profileAPI.setUserProfile(userId)
-        dispatch(addNewPost(response))
+        dispatch(setProfile(response.data))
     }
 }
 

@@ -2,23 +2,21 @@ import CustomButton from './CustomButton';
 import { Text, View, Image } from 'react-native';
 import React from 'react';
 import { styles } from '../styles/style';
+import { logout } from '../redux/loginReducer';
 
 const ProfileScreen = ({ navigation }) => {
     const loadLoginScene = () => {
+      logout()
       navigation.navigate('Login')
     }
 
     const changeTheme = () => {
-      if (styles.color === '#000') {
-        styles.color = '#4B3869'
-      } else {
-        styles.color = '#000'
-      }
+      console.log('Functionallity will be added in next versions');
     }
 
     return (
       <View style={{ 
-                flex: 1,
+                height: '100vh',
                 backgroundColor: '#664E88',
                 alignItems: 'center' 
               }}>
@@ -37,8 +35,8 @@ const ProfileScreen = ({ navigation }) => {
               }}
             />
             <View>
-              <Text>Name</Text>
-              <Text>Email</Text>
+              <Text style={styles.text}>Name</Text>
+              <Text style={styles.text}>Email</Text>
             </View>
           </View>
           <View>

@@ -13,7 +13,7 @@ function MyTabs() {
       screenOptions={{
         tabBarActiveTintColor: '#fff',
         tabBarLabelStyle: { fontSize: 12 },
-        tabBarStyle: { backgroundColor: styles.color },
+        tabBarStyle: { backgroundColor: '#4B3869' },
       }}>
       <Tab.Screen
         name="Feed"

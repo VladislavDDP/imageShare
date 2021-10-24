@@ -1,45 +1,56 @@
 import CustomButton from "./CustomButton"
 import { styles } from "../styles/style"
 import React from "react"
-import { SafeAreaView, View, TextInput } from "react-native"
+import { SafeAreaView, View, TextInput, Button } from "react-native"
+import { Formik } from 'formik';
+import { login } from "../redux/loginReducer";
 
 const Login = ({ navigation }) => {
-
     const checkEmail = (e) => {
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (regex.test(e.target.value)) {
-        return true
-      }
+      return regex.test(e)
     }
 
     const checkPassword = (e) => {
       const regex = /^\w{8,}$/
-      if (regex.test(e.target.value)) {
+      return regex.test(e)
+    }
+
+    const authorize = (values) => {
+      if (checkEmail(values.email) && checkPassword(values.password)) {
+        let {email, password} = values
+        navigation.navigate('Main')
+        login(email, password)
         return true
       }
     }
-
-    const loadScene = () => {
-      // if (checkEmail() && checkPassword()) {
-        navigation.navigate('Main')
-      // }
-    }
-
     return (
         <SafeAreaView style={styles.container}>
-          <View style={styles.form}>
-            <TextInput style={styles.input}
-              maxLength='30'
-              autoComplete='email'
-              placeholder='Login'
-              onChange={checkEmail.bind(this)} />
-            <TextInput style={styles.input}
-              maxLength='30'
-              secureTextEntry={true}
-              placeholder='Password'
-              onChange={checkPassword.bind(this)} />
-            <CustomButton title='Login' action={loadScene} />
-          </View>
+          <Formik
+            initialValues={{ email: '', password: '' }}
+            onSubmit={(values, {resetForm}) => {
+              if (authorize(values)) resetForm()
+            }}>
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <View>
+                <TextInput style={styles.input}
+                  placeholder='Email'
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                />
+                <TextInput style={styles.input}
+                  placeholder='Password'
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  secureTextEntry={true}
+                  value={values.password}
+                />
+                <CustomButton title='Login'
+                 action={handleSubmit} />
+              </View>
+            )}
+          </Formik>
         </SafeAreaView>
     )
 }

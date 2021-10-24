@@ -1,30 +1,53 @@
-const LOAD_PHOTOS = 'feeds/LOAD_PHOTOS'
+import { loginAPI } from "../API/api" 
+
+const AUTH_USER = 'auth/AUTH_USER'
 
 const initialState = {
-    posts: []
+    id: null,
+    email: null, 
+    first_name: null,
+    avatar: null,
+    isAuthorized: false
 }
 
-const loginReducer = (state=initialState, action) => {
-    
+const authReducer = (state=initialState, action) => {
+
     switch(action.type) {
-        case LOAD_PHOTOS:
+        case AUTH_USER:
             return {
                 ...state,
-                posts: [newPost, ...state.posts],
+                ...action.data,
+                isAuthorized: action.data.isAuth
             }
-
         default:
             return state
     }
 }
 
-export const addNewPost = (text) => ({type: LOAD_PHOTOS, text})
+export const authUserProfile = (userId, email, first_name, avatar, isAuth) => (
+    {type: AUTH_USER, data: {userId, email, first_name, avatar, isAuth}}
+)
 
-export const setUserProfile = (userId) => {
+export const authAccount = (id) => {
     return async (dispatch) => {
-        const response = await profileAPI.setUserProfile(userId)
-        dispatch(addNewPost(response))
+        const response = await loginAPI.authMe(id)
+        const {id, email, first_name, avatar} = response.data
+        dispatch(authUserProfile(id, email, first_name, avatar, true))
     }
 }
 
-export default loginReducer
+export const login = (email, password) => {
+    console.log('reducer');
+    return async (dispatch) => {
+        const response = await loginAPI.login(email, password)
+        dispatch(authAccount(response))
+    }
+}
+
+export const logout = () => {
+    return (dispatch) => {
+        dispatch(authUserProfile(null, null, null, null, false))
+    }
+}
+
+export default authReducer

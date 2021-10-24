@@ -1,20 +1,33 @@
 export const feedsAPI = {
-    getPhotos() {
-        return instance.get('auth/me').then(response => response.data)
+    async getPhotos() {
+        try {
+            const response = await fetch('https://picsum.photos/v2/list');
+            const json = await response.json();
+            return json
+        } finally {
+            setLoading(false);
+        }
     }
 }
 
 export const loginAPI = {
-    authMe() {
-        return instance.get('auth/me')
-             .then(response => response.data)
+    async authMe(id) {
+        const response = await fetch(`https://reqres.in/api/users/${id}`);
+        const json = await response.json();
+        return json.data
     },
-    login(email, password, rememberMe) {
-        return instance.post('auth/login', {email, password, rememberMe})
-                       .then(response => response.data)
+    async login(email, password) {
+        const response = await fetch('https://reqres.in/api/register', {
+            method: 'POST',
+            body: JSON.stringify({ email: email, password: password })
+        });
+        const json = await response.json();
+        console.log(json);
+        return json.id
     },
-    logout() {
-        return instance.delete('auth/login', {})
-                       .then(response => response.data)
-    },
+    async logout() {
+        const response = await fetch('https://reqres.in/api/login', {method: 'DELETE'});
+        const json = await response.json();
+        return json
+    }
 }

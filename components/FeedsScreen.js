@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
 
-const FeedsScreen = () => {
+const FeedsScreen = (props) => {
     const [isLoading, setLoading] = React.useState(true);
     const [data, setData] = React.useState([]);
 
@@ -15,11 +15,11 @@ const FeedsScreen = () => {
     } finally {
         setLoading(false);
       }
-  }
+    }
 
-  React.useEffect(() => {
+    React.useEffect(() => {
     getPhotos();
-  }, []);
+    }, []);
 
 
     return (
@@ -28,7 +28,7 @@ const FeedsScreen = () => {
             backgroundColor: '#664E88',
             alignItems: 'center' }}>
 
-          {isLoading ? <ActivityIndicator/> : (
+          {isLoading ? <ActivityIndicator size="large" color="#00ff00" /> : (
           <FlatList
             data={data}
             keyExtractor={({ id }, index) => id}

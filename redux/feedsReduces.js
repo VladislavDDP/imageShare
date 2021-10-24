@@ -3,7 +3,7 @@ import { feedsAPI } from "../API/api"
 const LOAD_PHOTOS = 'feeds/LOAD_PHOTOS'
 
 const initialState = {
-    posts: []
+    photos: []
 }
 
 const feedsReducer = (state=initialState, action) => {
@@ -12,7 +12,7 @@ const feedsReducer = (state=initialState, action) => {
         case LOAD_PHOTOS:
             return {
                 ...state,
-                posts: [newPost, ...state.posts],
+                photos: [...state.photos]
             }
 
         default:
@@ -20,12 +20,12 @@ const feedsReducer = (state=initialState, action) => {
     }
 }
 
-export const addNewPost = (text) => ({type: LOAD_PHOTOS, text})
+export const loadPhotos = (photos) => ({type: LOAD_PHOTOS, photos})
 
-export const setUserProfile = (userId) => {
+export const setFeedsPhotos = () => {
     return async (dispatch) => {
-        const response = await profileAPI.setUserProfile(userId)
-        dispatch(addNewPost(response))
+        const response = await feedsAPI.getPhotos()
+        dispatch(loadPhotos(response))
     }
 }
 

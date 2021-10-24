@@ -19,5 +19,7 @@ export const styles = StyleSheet.create({
       width: '50vw',
       height: '35px'
     },
-    color: '#4B3869'
+    text: {
+      color: '#fff'
+    }
 });
