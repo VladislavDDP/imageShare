@@ -42,7 +42,7 @@ const FeedsScreen = (props) => {
                       borderRadius: '20px',
                       margin: '20px'
                   }} />
-                  <Text tyle={{margin: '0 20px', width: '90vw',}}>{item.author}</Text>
+                  <Text style={{margin: '0 20px', width: '90vw'}}>{item.author}</Text>
               </>
               )}
             />
