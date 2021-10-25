@@ -21,19 +21,17 @@ const FeedsScreen = (props) => {
     getPhotos();
     }, []);
 
-
     return (
         <View style={{ flex: 1, 
             justifyContent: 'center',
             backgroundColor: '#664E88',
             alignItems: 'center' }}>
-
-          {isLoading ? <ActivityIndicator size="large" color="#00ff00" /> : (
+          {isLoading === true ? <ActivityIndicator size="large" color="#00ff00" /> : (
           <FlatList
             data={data}
             keyExtractor={({ id }, index) => id}
             renderItem={({ item }) => (
-              <>
+              <View>
                   <Image source={{
                       uri: item.download_url
                   }} style={{
@@ -43,7 +41,7 @@ const FeedsScreen = (props) => {
                       margin: '20px'
                   }} />
                   <Text style={{margin: '0 20px', width: '90vw'}}>{item.author}</Text>
-              </>
+              </View>
               )}
             />
           )}

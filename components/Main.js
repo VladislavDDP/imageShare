@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProfileScreen from './ProfileScreen';
 import FeedsScreen from './FeedsScreen';
-import { styles } from '../styles/style';
 
 const Tab = createMaterialTopTabNavigator();
 
