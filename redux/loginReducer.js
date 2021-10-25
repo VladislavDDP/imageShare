@@ -37,7 +37,6 @@ export const authAccount = (id) => {
 }
 
 export const login = (email, password) => {
-    console.log('reducer');
     return async (dispatch) => {
         const response = await loginAPI.login(email, password)
         dispatch(authAccount(response))

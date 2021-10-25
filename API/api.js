@@ -22,7 +22,6 @@ export const loginAPI = {
             body: JSON.stringify({ email: email, password: password })
         });
         const json = await response.json();
-        console.log(json);
         return json.id
     },
     async logout() {

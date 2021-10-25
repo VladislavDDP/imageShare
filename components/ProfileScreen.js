@@ -1,35 +1,29 @@
-import CustomButton from './CustomButton';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Button } from 'react-native';
 import React from 'react';
 import { styles } from '../styles/style';
 import { logout } from '../redux/loginReducer';
 
 const ProfileScreen = ({ navigation }) => {
-    const loadLoginScene = () => {
-      logout()
-      navigation.navigate('Login')
-    }
-
     const changeTheme = () => {
       console.log('Functionallity will be added in next versions');
     }
 
     return (
       <View style={{ 
-                height: '100vh',
+                height: '100%',
                 backgroundColor: '#664E88',
                 alignItems: 'center' 
               }}>
           <View style={{
                 backgroundColor: '#4B3869',
                 flexDirection: 'row',
-                margin: '20px',
-                width: '50vw',
-                padding: '20px',
-                borderRadius: '20px'
+                margin: 10,
+                width: 300,
+                padding: 5,
+                borderRadius: 5
           }}>
             <Image
-              style={{ width: 50, height: 50, marginRight: '20px' }}
+              style={{ width: 50, height: 50, marginRight: 5 }}
               source={{
                 uri: 'https://reactnative.dev/img/tiny_logo.png',
               }}
@@ -40,8 +34,10 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </View>
           <View>
-              <CustomButton title='Change theme to light' action={changeTheme} />
-              <CustomButton title='Logout' action={loadLoginScene} />
+              <Button title='Change theme to light' onPress={changeTheme} />
+              <Button title='Logout' onPress={() =>
+                  navigation.navigate('Login', {})
+              } />
           </View>
       </View>
     );

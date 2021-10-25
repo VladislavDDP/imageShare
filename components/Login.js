@@ -1,7 +1,6 @@
-import CustomButton from "./CustomButton"
 import { styles } from "../styles/style"
 import React from "react"
-import { SafeAreaView, View, TextInput, Button } from "react-native"
+import { SafeAreaView, View, TextInput, Button, Alert } from "react-native"
 import { Formik } from 'formik';
 import { login } from "../redux/loginReducer";
 
@@ -23,6 +22,11 @@ const Login = ({ navigation }) => {
         login(email, password)
         return true
       }
+      Alert.alert(
+        "Validation error",
+        "Email should be corrent and password must contain at least 8 symbols",
+        [{ text: "OK"}]
+      );
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -46,8 +50,7 @@ const Login = ({ navigation }) => {
                   secureTextEntry={true}
                   value={values.password}
                 />
-                <CustomButton title='Login'
-                 action={handleSubmit} />
+                <Button onPress={handleSubmit} title="Login" />
               </View>
             )}
           </Formik>

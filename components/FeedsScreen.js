@@ -22,7 +22,7 @@ const FeedsScreen = (props) => {
     }, []);
 
     return (
-        <View style={{ flex: 1, 
+        <View style={{ flex: 1,
             justifyContent: 'center',
             backgroundColor: '#664E88',
             alignItems: 'center' }}>
@@ -35,12 +35,12 @@ const FeedsScreen = (props) => {
                   <Image source={{
                       uri: item.download_url
                   }} style={{
-                      width: '90vw',
-                      height: '250px',
-                      borderRadius: '20px',
-                      margin: '20px'
+                      width: 320,
+                      height: 100,
+                      borderRadius: 20,
+                      margin: 10
                   }} />
-                  <Text style={{margin: '0 20px', width: '90vw'}}>{item.author}</Text>
+                  <Text style={{margin: 2, width: 90}}>{item.author}</Text>
               </View>
               )}
             />

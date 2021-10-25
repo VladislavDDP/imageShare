@@ -8,18 +8,20 @@ export const styles = StyleSheet.create({
       alignItems: 'center'
     },
     form: {
-      width: '50vw',
+      width: 50,
       display: 'flex',
       flexDirection: 'column'
     },
     input: {
-      border: 'none',
-      marginBottom: '10px',
+      marginBottom: 10,
       color: '#fff',
-      width: '50vw',
-      height: '35px'
+      width: 100,
+      height: 30
     },
     text: {
       color: '#fff'
+    },
+    button: {
+      marginTop: 10
     }
 });

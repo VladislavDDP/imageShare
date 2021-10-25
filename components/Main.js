@@ -30,6 +30,6 @@ function MyTabs() {
 }
 export default function Main() {
   return (
-    <MyTabs />
+    <MyTabs /> 
   );
 }
