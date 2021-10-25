@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "crossApp",
-    "slug": "crossApp",
+    "name": "technicalTask",
+    "slug": "photosloader",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "My tech task on trainee position",
+    "githubUrl": "https://github.com/VladislavDDP"
   }
 }
