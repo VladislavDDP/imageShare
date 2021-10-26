@@ -1,7 +1,6 @@
 import React from "react";
 import Main from "./components/Main";
 import Login from "./components/Login";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 

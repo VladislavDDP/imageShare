@@ -1,6 +1,6 @@
 import { styles } from "../styles/style"
 import React from "react"
-import { SafeAreaView, View, TextInput, Button, Alert } from "react-native"
+import { SafeAreaView, View, TextInput, Text, Alert, TouchableOpacity } from "react-native"
 import { Formik } from 'formik';
 import { login } from "../redux/loginReducer";
 
@@ -50,7 +50,9 @@ const Login = ({ navigation }) => {
                   secureTextEntry={true}
                   value={values.password}
                 />
-                <Button onPress={handleSubmit} title="Login" />
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Text>Login</Text>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>
