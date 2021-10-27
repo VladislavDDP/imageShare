@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProfileScreen from './ProfileScreen';
 import FeedsScreen from './FeedsScreen';
+import { SafeAreaView, SafeAreaProvider } from 'react-native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,6 +31,6 @@ function MyTabs() {
 }
 export default function Main() {
   return (
-    <MyTabs /> 
+    <MyTabs />
   );
 }

@@ -5,23 +5,49 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#333',
       justifyContent: 'center',
-      alignItems: 'center'
     },
     form: {
-      width: 50,
+      width: 1,
       display: 'flex',
       flexDirection: 'column'
     },
     input: {
+      color: 'black',
+      height: 40,
+      padding: 10,
+      marginLeft: 20,
+      marginRight: 20,
       marginBottom: 10,
-      color: '#fff',
-      width: 100,
-      height: 30
+      backgroundColor: '#999',
+      borderRadius: 10
     },
-    text: {
-      color: '#fff'
+    loginBtn: {
+      borderRadius: 25,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "indigo",
+      marginLeft: 20,
+      marginRight: 20
     },
-    button: {
-      marginTop: 10
+    logoutBtn: {
+      borderRadius: 25,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#de6488",
+      marginLeft: 20,
+      marginRight: 20,
+      marginBottom: 10
+    },
+    changeThemeBtn: {
+      borderRadius: 25,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "indigo",
+      marginLeft: 20,
+      marginRight: 20,
+      marginBottom: 10
     }
 });

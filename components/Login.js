@@ -1,10 +1,26 @@
 import { styles } from "../styles/style"
 import React from "react"
-import { SafeAreaView, View, TextInput, Text, Alert, TouchableOpacity } from "react-native"
+import { SafeAreaView,
+         View,
+         TextInput,
+         Text,
+         Alert,
+         TouchableOpacity,
+         ActivityIndicator } from "react-native"
 import { Formik } from 'formik';
-import { login } from "../redux/loginReducer";
+import { useEffect } from "react";
 
 const Login = ({ navigation }) => {
+    const [isLoading, setLoading] = React.useState(false);
+
+    const loginHandle = (userName, password) => {
+
+      const foundUser = Users.filter( item => {
+          return userName == item.username && password == item.password;
+      });
+      signIn(foundUser);
+  }
+
     const checkEmail = (e) => {
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       return regex.test(e)
@@ -15,25 +31,58 @@ const Login = ({ navigation }) => {
       return regex.test(e)
     }
 
-    const authorize = (values) => {
+    const authorize = async (values) => {
+
       if (checkEmail(values.email) && checkPassword(values.password)) {
         let {email, password} = values
-        navigation.navigate('Main')
-        login(email, password)
-        return true
+        await fetch('https://reqres.in/api/login', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            'email': email,
+            'password': password
+          })
+        }).then(res => res.json())
+        .then(resData => {
+          if (resData.token) {
+            navigation.navigate('Main')
+            setLoading(false)
+            return true
+          } else {
+            setLoading(false)
+            Alert.alert('Authentification error!')
+            return false
+          } 
+        })
+      } else {
+        Alert.alert(
+          "Validation error",
+          "Email should be corrent and password must contain at least 8 symbols",
+          [{ text: "OK"}]
+        );
       }
-      Alert.alert(
-        "Validation error",
-        "Email should be corrent and password must contain at least 8 symbols",
-        [{ text: "OK"}]
-      );
+      
     }
     return (
         <SafeAreaView style={styles.container}>
+          {isLoading === true 
+          ? <ActivityIndicator size="large" color="indigo" /> 
+          : ( 
           <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ email: 'eve.holt@reqres.in', password: 'cityslicka' }}
             onSubmit={(values, {resetForm}) => {
-              if (authorize(values)) resetForm()
+              setLoading(true)
+              if (authorize(values)) {
+                // resetForm()
+                values.email = 'eve.holt@reqres.in'
+                values.password = 'cityslicka'
+              } else {
+                Alert.alert('Incorrect login or password!', [{text: 'OK'}])
+                alert('Incorrect login or password!')
+              }
             }}>
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <View>
@@ -50,12 +99,13 @@ const Login = ({ navigation }) => {
                   secureTextEntry={true}
                   value={values.password}
                 />
-                <TouchableOpacity onPress={handleSubmit}>
+                <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit}>
                   <Text>Login</Text>
                 </TouchableOpacity>
               </View>
             )}
           </Formik>
+          )}
         </SafeAreaView>
     )
 }

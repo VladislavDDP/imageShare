@@ -2,6 +2,7 @@ import React from 'react';
 import store from './redux/store';
 import { Provider } from 'react-redux'
 import Navigate from './navigate';
+import { SafeAreaView } from 'react-native';
 
 export default class App extends React.PureComponent {
   constructor(props) {

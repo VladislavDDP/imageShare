@@ -1,19 +1,33 @@
 import { loginAPI } from "../API/api" 
 
-const AUTH_USER = 'auth/AUTH_USER'
+const RETRIVE_TOKEN = 'auth/RETRIVE_TOKEN'
+const LOGIN = 'auth/LOGIN'
+const LOGOUT = 'auth/LOGOUT'
 
 const initialState = {
     id: null,
     email: null, 
     first_name: null,
     avatar: null,
-    isAuthorized: false
+    isAuthorized: false,
+    userToken: null
 }
 
-const authReducer = (state=initialState, action) => {
-
+const loginReducer = (state=initialState, action) => {
     switch(action.type) {
-        case AUTH_USER:
+        case RETRIVE_TOKEN:
+            return {
+                ...state,
+                ...action.data,
+                isAuthorized: action.data.isAuth
+            }
+        case LOGIN:
+            return {
+                ...state,
+                ...action.data,
+                isAuthorized: action.data.isAuth
+            }
+        case LOGOUT:
             return {
                 ...state,
                 ...action.data,
@@ -24,29 +38,17 @@ const authReducer = (state=initialState, action) => {
     }
 }
 
-export const authUserProfile = (userId, email, first_name, avatar, isAuth) => (
+export const login = (email, password) => (
     {type: AUTH_USER, data: {userId, email, first_name, avatar, isAuth}}
 )
 
-export const authAccount = (id) => {
-    return async (dispatch) => {
-        const response = await loginAPI.authMe(id)
-        const {id, email, first_name, avatar} = response.data
-        dispatch(authUserProfile(id, email, first_name, avatar, true))
-    }
-}
+export const logout = () => (
+    {type: AUTH_USER, data: {userId, email, first_name, avatar, isAuth}}
+)
 
-export const login = (email, password) => {
-    return async (dispatch) => {
-        const response = await loginAPI.login(email, password)
-        dispatch(authAccount(response))
-    }
-}
+export const retrieve = (token) => (
+    {type: AUTH_USER, data: {userId, email, first_name, avatar, isAuth}}
+)
 
-export const logout = () => {
-    return (dispatch) => {
-        dispatch(authUserProfile(null, null, null, null, false))
-    }
-}
 
-export default authReducer
+export default loginReducer
