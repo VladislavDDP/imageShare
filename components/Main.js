@@ -6,7 +6,7 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native';
 
 const Tab = createMaterialTopTabNavigator();
 
-function MyTabs() {
+function MyTabs(props) {
   return (
     <Tab.Navigator
       initialRouteName="Feed"
@@ -29,8 +29,8 @@ function MyTabs() {
     </Tab.Navigator>
   );
 }
-export default function Main() {
+export default function Main(props) {
   return (
-    <MyTabs />
+    <MyTabs state={props.state} />
   );
 }

@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createStackNavigator()
 
-export default function Navigate () {
+export default function Navigate (props) {
     return <NavigationContainer>
         <Stack.Navigator>
             <Stack.Screen

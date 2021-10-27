@@ -57,8 +57,9 @@ const ProfileScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.changeThemeBtn} onPress={changeTheme}>
               <Text>Change theme to light</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logoutBtn} onPress={() =>
+            <TouchableOpacity style={styles.logoutBtn} onPress={() => {
                   navigation.navigate('Login', {})
+                }
               }>
               <Text>Logout</Text>
             </TouchableOpacity>

@@ -7,107 +7,101 @@ import { SafeAreaView,
          Alert,
          TouchableOpacity,
          ActivityIndicator } from "react-native"
-import { Formik } from 'formik';
-import { useEffect } from "react";
 
 const Login = ({ navigation }) => {
-    const [isLoading, setLoading] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(false);
+    //email: 'eve.holt@reqres.in', password: 'cityslicka'
+  const [data, setData] = React.useState({
+    email: '',
+    password: ''
+  });
 
-    const loginHandle = (userName, password) => {
-
-      const foundUser = Users.filter( item => {
-          return userName == item.username && password == item.password;
-      });
-      signIn(foundUser);
+  const checkEmail = (e) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return regex.test(e)
   }
 
-    const checkEmail = (e) => {
-      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      return regex.test(e)
-    }
+  const checkPassword = (e) => {
+    const regex = /^\w{8,}$/
+    return regex.test(e)
+  }
 
-    const checkPassword = (e) => {
-      const regex = /^\w{8,}$/
-      return regex.test(e)
-    }
-
-    const authorize = async (values) => {
-
-      if (checkEmail(values.email) && checkPassword(values.password)) {
-        let {email, password} = values
-        await fetch('https://reqres.in/api/login', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({
-            'email': email,
-            'password': password
-          })
-        }).then(res => res.json())
-        .then(resData => {
-          if (resData.token) {
-            navigation.navigate('Main')
-            setLoading(false)
-            return true
-          } else {
-            setLoading(false)
-            Alert.alert('Authentification error!')
-            return false
-          } 
+  const authorize = async () => {
+    if (checkEmail(data.email) && checkPassword(data.password)) {
+      let {email, password} = data
+      await fetch('https://reqres.in/api/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          'email': email,
+          'password': password
         })
-      } else {
-        Alert.alert(
-          "Validation error",
-          "Email should be corrent and password must contain at least 8 symbols",
-          [{ text: "OK"}]
-        );
-      }
-      
+      }).then(res => res.json())
+      .then(resData => {
+        if (resData.token) {
+          // login(data.email, resData.token)
+          navigation.navigate('Main')
+          setLoading(false)
+          return true
+        } else {
+          setLoading(false)
+          Alert.alert('Authentification error!')
+          return false
+        } 
+      })
+    } else {
+      Alert.alert(
+        "Validation error",
+        "Email should be corrent and password must contain at least 8 symbols",
+        [{ text: "OK"}]
+      );
     }
-    return (
-        <SafeAreaView style={styles.container}>
-          {isLoading === true 
-          ? <ActivityIndicator size="large" color="indigo" /> 
-          : ( 
-          <Formik
-            initialValues={{ email: 'eve.holt@reqres.in', password: 'cityslicka' }}
-            onSubmit={(values, {resetForm}) => {
-              setLoading(true)
-              if (authorize(values)) {
-                // resetForm()
-                values.email = 'eve.holt@reqres.in'
-                values.password = 'cityslicka'
-              } else {
-                Alert.alert('Incorrect login or password!', [{text: 'OK'}])
-                alert('Incorrect login or password!')
-              }
-            }}>
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
-              <View>
-                <TextInput style={styles.input}
-                  placeholder='Email'
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
-                <TextInput style={styles.input}
-                  placeholder='Password'
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  secureTextEntry={true}
-                  value={values.password}
-                />
-                <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit}>
-                  <Text>Login</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
+  }
+
+  const emailTyping = (value) => {
+    setData({
+      ...data,
+      email: value
+    })
+  }
+
+  const passwordTyping = (value) => {
+    setData({
+      ...data,
+      password: value
+    })
+  }
+
+  return (
+      <SafeAreaView style={styles.container}>
+        {isLoading === true 
+        ? <ActivityIndicator size="large" color="indigo" /> 
+        : ( 
+            <View>
+              <TextInput style={styles.input}
+                placeholder='Email'
+                onChangeText={(e) => emailTyping(e)}
+                value={data.email}
+              />
+              <TextInput style={styles.input}
+                placeholder='Password'
+                onChangeText={(e) => passwordTyping(e)}
+                secureTextEntry={true}
+                value={data.password}
+              />
+              <TouchableOpacity style={styles.loginBtn} onPress={() => {
+                  setLoading(true)
+                  authorize()
+                }}>
+                <Text>Login</Text>
+              </TouchableOpacity>
+            </View>
           )}
-        </SafeAreaView>
-    )
+      </SafeAreaView>
+  )
 }
 
 export default Login
