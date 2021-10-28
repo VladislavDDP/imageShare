@@ -29,8 +29,8 @@ function MyTabs(props) {
     </Tab.Navigator>
   );
 }
-export default function Main(props) {
+export default function Main() {
   return (
-    <MyTabs state={props.state} />
+    <MyTabs />
   );
 }

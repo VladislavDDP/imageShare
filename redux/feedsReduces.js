@@ -1,18 +1,16 @@
-import { feedsAPI } from "../API/api"
-
-const LOAD_PHOTOS = 'feeds/LOAD_PHOTOS'
+const LOAD_PAGE = 'feeds/LOAD_PAGE'
 
 const initialState = {
-    photos: []
+    page: null
 }
 
 const feedsReducer = (state=initialState, action) => {
     
     switch(action.type) {
-        case LOAD_PHOTOS:
+        case LOAD_PAGE:
             return {
                 ...state,
-                photos: [...state.photos]
+                page: ++page
             }
 
         default:
@@ -20,12 +18,11 @@ const feedsReducer = (state=initialState, action) => {
     }
 }
 
-export const loadPhotos = (photos) => ({type: LOAD_PHOTOS, photos})
+export const loadPage = (photos) => ({type: LOAD_PAGE, photos})
 
-export const setFeedsPhotos = () => {
+export const loadNextPage = () => {
     return async (dispatch) => {
-        const response = await feedsAPI.getPhotos()
-        dispatch(loadPhotos(response))
+        dispatch(loadPage())
     }
 }
 

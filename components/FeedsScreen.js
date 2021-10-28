@@ -1,20 +1,21 @@
 import React from 'react';
 import { Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
+import { loadNextPage } from '../redux/feedsReduces';
 
 const FeedsScreen = (props) => {
     const [isLoading, setLoading] = React.useState(true);
-    const [data, setData] = React.useState([]);
     const [isRefreshing, setIsRefreshing] = React.useState(false)
+    const [data, setData] = React.useState([]);
 
     const getPhotos = async () => {
-      const page = Math.floor(Math.random() * 5)
-        try {
+      try {
         const response = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=10`);
         const json = await response.json();
         setData(json);
-    } catch (error) {
+      } catch (error) {
         console.error(error);
-    } finally {
+      } finally {
         setLoading(false)
         setIsRefreshing(false)
       }
@@ -26,6 +27,7 @@ const FeedsScreen = (props) => {
 
     const onRefresh = () => {
       setIsRefreshing(true)
+      props.loadNextPage()
       getPhotos()
   }
 
@@ -64,4 +66,6 @@ const FeedsScreen = (props) => {
         </View>)
 }
 
-export default FeedsScreen
+const mapStateToProps = (state) => ({}) 
+
+export default connect(mapStateToProps, {loadNextPage})(FeedsScreen)

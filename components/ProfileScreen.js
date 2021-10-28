@@ -1,14 +1,13 @@
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { styles } from '../styles/style';
-import { logout } from '../redux/loginReducer';
+import { connect } from 'react-redux';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ navigation, ...props }) => {
     const changeTheme = () => {
       console.log('Functionallity will be added in next versions');
     }
 
-    const [isLoading, setLoading] = React.useState(true);
     const [data, setData] = React.useState([]);
 
     const setProfile = (email) => {
@@ -25,7 +24,7 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     React.useEffect(() => {
-      setProfile('eve.holt@reqres.in');
+      setProfile(props.email);
     }, []);
 
     return (
@@ -45,7 +44,7 @@ const ProfileScreen = ({ navigation }) => {
             <Image
               style={{ width: 50, height: 50, marginRight: 5 }}
               source={{
-                uri: data.avatar,
+                uri: data.avatar? data.avatar : null,
               }}
             />
             <View>
@@ -68,4 +67,8 @@ const ProfileScreen = ({ navigation }) => {
     );
 }
 
-export default ProfileScreen
+const mapStateToProps = (state) => ({
+  email: state.loginPage.email
+})
+
+export default connect(mapStateToProps, {})(ProfileScreen)

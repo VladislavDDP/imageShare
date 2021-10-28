@@ -1,5 +1,6 @@
 import { styles } from "../styles/style"
 import React from "react"
+import { connect } from "react-redux"
 import { SafeAreaView,
          View,
          TextInput,
@@ -7,10 +8,11 @@ import { SafeAreaView,
          Alert,
          TouchableOpacity,
          ActivityIndicator } from "react-native"
+import { login } from "../redux/loginReducer"
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, ...props }) => {
+  console.log(props);
   const [isLoading, setLoading] = React.useState(false);
-    //email: 'eve.holt@reqres.in', password: 'cityslicka'
   const [data, setData] = React.useState({
     email: '',
     password: ''
@@ -42,7 +44,7 @@ const Login = ({ navigation }) => {
       }).then(res => res.json())
       .then(resData => {
         if (resData.token) {
-          // login(data.email, resData.token)
+          props.login(email, password, resData.token)
           navigation.navigate('Main')
           setLoading(false)
           return true
@@ -104,5 +106,6 @@ const Login = ({ navigation }) => {
   )
 }
 
-export default Login
+const mapStateToProps = (state) => ({})
+export default connect(mapStateToProps, {login})(Login)
 
