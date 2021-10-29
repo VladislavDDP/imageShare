@@ -1,20 +1,23 @@
-import React from 'react';
-import { Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
-import { connect } from 'react-redux';
-import { loadNextPage } from '../redux/feedsReduces';
+import React from 'react'
+import { Text, View, Image, FlatList, ActivityIndicator, Button } from 'react-native'
+import { connect } from 'react-redux'
+import { loadNextPage } from '../redux/feedsReduces'
+import { styles } from '../styles/style'
 
 const FeedsScreen = (props) => {
     const [isLoading, setLoading] = React.useState(true);
     const [isRefreshing, setIsRefreshing] = React.useState(false)
-    const [data, setData] = React.useState([]);
+    const [data, setData] = React.useState([])
+    const [page, setPage] = React.useState(1)
 
     const getPhotos = async () => {
+      props.loadNextPage()
       try {
-        const response = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=10`);
-        const json = await response.json();
-        setData(json);
+        const response = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=5`)
+        const json = await response.json()
+        setData(json)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       } finally {
         setLoading(false)
         setIsRefreshing(false)
@@ -22,50 +25,47 @@ const FeedsScreen = (props) => {
     }
 
     React.useEffect(() => {
-      getPhotos();
-    }, []);
+      setPage(props.page)
+      getPhotos()
+      setPage(props.page + 1)
+    }, [])
 
     const onRefresh = () => {
       setIsRefreshing(true)
-      props.loadNextPage()
+      setPage(page + 1)
       getPhotos()
-  }
+    }
+
+    // loading new posts for web browser with button
+    // const loadNextPicsWeb = () => {
+    //   setPage(props.page + 1)
+    //   getPhotos()
+    // }
 
     return (
-        <View style={{ 
-            flex: 1,
-            backgroundColor: '#664E88'}}>
-          {isLoading === true ? <ActivityIndicator size="large" color="indigo" /> : (
+      <View style={styles.feeds_container}>
+        {isLoading === true ? <ActivityIndicator size="large" color="indigo" /> : (
           <FlatList
-            onRefresh={onRefresh}
-            refreshing={isRefreshing}
-            data={data}
-            keyExtractor={({ id }, index) => id}
-            renderItem={({ item }) => (
-              <View style={{marginBottom: 10, marginLeft: 0, marginRight: 20}}>
-                  <Image source={{
-                      uri: item.download_url
-                  }} style={{
-                      width: '100%',
-                      height: 200,
-                      borderRadius: 10,
-                      margin: 10,
-                      marginBottom: -30
-                  }} />
-                  <Text style={{width: '100%',
-                                padding: 10,
-                                position: 'relative',
-                                color: '#fff',
-                                backgroundColor: '#bebebe',
-                                marginLeft: 10,
-                                borderRadius: 10}}>{item.author}</Text>
-              </View>
-              )}
-            />
-          )}
-        </View>)
+          onRefresh={onRefresh}
+          refreshing={isRefreshing}
+          data={data}
+          keyExtractor={({ id }, index) => id}
+          renderItem={({ item }) => (
+            <View style={styles.photo_container}>
+              <Image source={{
+                uri: item.download_url
+              }} style={styles.photo} />
+              <Text style={styles.photo_description}>{item.author}</Text>
+            </View>
+            )} />
+        )}
+        {/* <Button title='load more' onPress={loadNextPicsWeb} /> */}
+      </View>
+    )
 }
 
-const mapStateToProps = (state) => ({}) 
+const mapStateToProps = (state) => ({
+  page: state.feedPage.page
+}) 
 
 export default connect(mapStateToProps, {loadNextPage})(FeedsScreen)

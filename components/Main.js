@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ProfileScreen from './ProfileScreen';
-import FeedsScreen from './FeedsScreen';
-import { SafeAreaView, SafeAreaProvider } from 'react-native';
+import * as React from 'react'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import ProfileScreen from './ProfileScreen'
+import FeedsScreen from './FeedsScreen'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { styles } from '../styles/style'
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator()
 
 function MyTabs(props) {
   return (
@@ -31,6 +32,8 @@ function MyTabs(props) {
 }
 export default function Main() {
   return (
-    <MyTabs />
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <MyTabs />
+    </SafeAreaView>
   );
 }

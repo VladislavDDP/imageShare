@@ -1,35 +1,35 @@
-import { styles } from "../styles/style"
 import React from "react"
+import FormInput from "./FormInput"
+import { styles } from "../styles/style"
 import { connect } from "react-redux"
-import { SafeAreaView,
-         View,
-         TextInput,
-         Text,
-         Alert,
-         TouchableOpacity,
-         ActivityIndicator } from "react-native"
+import { View, Text,
+         Alert, TouchableOpacity, ActivityIndicator } from "react-native"
 import { login } from "../redux/loginReducer"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 const Login = ({ navigation, ...props }) => {
-  console.log(props);
   const [isLoading, setLoading] = React.useState(false);
   const [data, setData] = React.useState({
-    email: '',
-    password: ''
+    email: 'eve.holt@reqres.in',
+    password: 'cityslicka'
   });
+  const [error, setError] = React.useState('')
 
-  const checkEmail = (e) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return regex.test(e)
-  }
-
-  const checkPassword = (e) => {
-    const regex = /^\w{8,}$/
-    return regex.test(e)
+  const validateData = ({email, password}) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const passwordRegex = /^\w{8,}$/
+    if (!emailRegex.test(email)) {
+      setError('Email isn`t valid!')
+      return false
+    } else if (!passwordRegex.test(password)) {
+      setError('Password isn`t valid!')
+      return false
+    }
+    else return true
   }
 
   const authorize = async () => {
-    if (checkEmail(data.email) && checkPassword(data.password)) {
+    if (validateData(data)) {
       let {email, password} = data
       await fetch('https://reqres.in/api/login', {
         method: 'POST',
@@ -44,56 +44,47 @@ const Login = ({ navigation, ...props }) => {
       }).then(res => res.json())
       .then(resData => {
         if (resData.token) {
+          console.log(resData.token);
+          console.log(password);
+          console.log(email);
           props.login(email, password, resData.token)
           navigation.navigate('Main')
           setLoading(false)
-          return true
+          setError(null)
         } else {
           setLoading(false)
           Alert.alert('Authentification error!')
-          return false
         } 
       })
     } else {
-      Alert.alert(
-        "Validation error",
-        "Email should be corrent and password must contain at least 8 symbols",
-        [{ text: "OK"}]
-      );
+      setLoading(false)
     }
   }
 
-  const emailTyping = (value) => {
-    setData({
-      ...data,
-      email: value
-    })
-  }
-
-  const passwordTyping = (value) => {
-    setData({
-      ...data,
-      password: value
-    })
+  const handleOnTextChange = (value, fieldName) => {
+    setData({...data, [fieldName]: value})
   }
 
   return (
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <View style={styles.container}>
         {isLoading === true 
         ? <ActivityIndicator size="large" color="indigo" /> 
         : ( 
             <View>
-              <TextInput style={styles.input}
-                placeholder='Email'
-                onChangeText={(e) => emailTyping(e)}
-                value={data.email}
-              />
-              <TextInput style={styles.input}
-                placeholder='Password'
-                onChangeText={(e) => passwordTyping(e)}
-                secureTextEntry={true}
-                value={data.password}
-              />
+              {error ? <Text style={styles.validating_error}>{error}</Text> : null}
+              <FormInput style={styles.input}
+                         autoCapitalize='none'
+                         placeholder='Email' 
+                         onChangeText={(value) => handleOnTextChange(value, 'email')} 
+                         value={data.email} />
+              <FormInput style={styles.input}
+                         autoCapitalize='none'
+                         placeholder='Password'
+                         onChangeText={(value) => handleOnTextChange(value, 'password')}
+                         secureTextEntry={true} 
+                         value={data.password} />
+
               <TouchableOpacity style={styles.loginBtn} onPress={() => {
                   setLoading(true)
                   authorize()
@@ -102,6 +93,7 @@ const Login = ({ navigation, ...props }) => {
               </TouchableOpacity>
             </View>
           )}
+      </View>
       </SafeAreaView>
   )
 }

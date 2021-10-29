@@ -1,12 +1,12 @@
 import React from 'react';
-import Navigate from './navigate';
+import Window from './components/navigate';
 import store from './redux/store';
 import { Provider } from 'react-redux'
 
 const App = () => {
   return (
     <Provider store={store}>
-      <Navigate />
+      <Window />
     </Provider>
   );
 }

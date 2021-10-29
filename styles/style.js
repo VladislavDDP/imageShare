@@ -6,10 +6,44 @@ export const styles = StyleSheet.create({
       backgroundColor: '#333',
       justifyContent: 'center',
     },
+    feeds_container: {
+      flex: 1,
+      backgroundColor: '#664E88'
+    },
     form: {
       width: 1,
       display: 'flex',
       flexDirection: 'column'
+    },
+    validating_error: {
+      color: '#FF0000',
+      marginLeft: 10
+    },
+    profile_view: {
+      alignItems: 'center',
+      backgroundColor: '#664E88',
+      height: '100%'
+    },
+    user_info: {
+      backgroundColor: '#4B3869',
+      borderRadius: 5,
+      flexDirection: 'row',
+      marginVertical: 10,
+      paddingHorizontal: 20,
+      paddingVertical: 20
+    },
+    white_color: {
+      color: '#fff'
+    },
+    max_width: {
+      width: '100%'
+    },
+    profile_photo: {
+      width: 100,
+      height: 100
+    },
+    profile_description: {
+      marginLeft: 20
     },
     input: {
       color: 'black',
@@ -35,7 +69,7 @@ export const styles = StyleSheet.create({
       height: 40,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#de6488",
+      backgroundColor: "#592357",
       marginLeft: 20,
       marginRight: 20,
       marginBottom: 10
@@ -49,5 +83,26 @@ export const styles = StyleSheet.create({
       marginLeft: 20,
       marginRight: 20,
       marginBottom: 10
+    },
+    photo_container: {
+      marginBottom: 10,
+      marginLeft: 0,
+      marginRight: 20
+    },
+    photo: {
+      width: '100%',
+      height: 300,
+      borderRadius: 10,
+      margin: 10,
+      marginBottom: -30
+    },
+    photo_description: {
+      width: '100%',
+      padding: 10,
+      position: 'relative',
+      color: '#fff',
+      backgroundColor: '#bebebe',
+      marginLeft: 10,
+      borderRadius: 10
     }
 });

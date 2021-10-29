@@ -2,6 +2,8 @@ import { Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { styles } from '../styles/style';
 import { connect } from 'react-redux';
+import { skipPages } from '../redux/feedsReduces';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfileScreen = ({ navigation, ...props }) => {
     const changeTheme = () => {
@@ -12,13 +14,16 @@ const ProfileScreen = ({ navigation, ...props }) => {
 
     const setProfile = (email) => {
       const getUser = async () => {
-        const response = await fetch(`https://reqres.in/api/users`);
-        const json = await response.json();
-        const user = json.data.filter( item => {
+        const response1 = await fetch(`https://reqres.in/api/users?page=1`)
+        const response2 = await fetch(`https://reqres.in/api/users?page=2`)
+        const json1 = await response1.json();
+        const json2 = await response2.json();
+        const result = {data: [...json1.data, ...json2.data]}
+        const user = result.data.filter( item => {
           return email == item.email;
-        })
-        setData(user[0]);
-        return user[0]
+        })[0]
+        setData(user)
+        return user
       }
       return getUser()
     }
@@ -27,39 +32,30 @@ const ProfileScreen = ({ navigation, ...props }) => {
       setProfile(props.email);
     }, []);
 
+    const logoutAction = () => {
+      navigation.navigate('Login', {})
+      props.skipPages()
+    }
+
     return (
-      <View style={{ 
-                alignItems: 'center',
-                backgroundColor: '#664E88',
-                height: '100%'
-              }}>
-          <View style={{
-                backgroundColor: '#4B3869',
-                borderRadius: 5,
-                flexDirection: 'row',
-                margin: 10,
-                padding: 5,
-                width: 300
-          }}>
+      <View style={styles.profile_view}>
+          <View style={styles.user_info}>
             <Image
-              style={{ width: 50, height: 50, marginRight: 5 }}
+              style={styles.profile_photo}
               source={{
                 uri: data.avatar? data.avatar : null,
               }}
             />
-            <View>
-              <Text style={{color: 'yellow'}}>{data.email}</Text>
-              <Text style={{color: 'yellow'}}>{data.first_name}</Text>
+            <View style={styles.profile_description}>
+              <Text style={styles.white_color}>{data.email}</Text>
+              <Text style={styles.white_color}>{data.first_name} {data.last_name}</Text>
             </View>
           </View>
-          <View style={{width: '100%'}}>
+          <View style={styles.max_width}>
             <TouchableOpacity style={styles.changeThemeBtn} onPress={changeTheme}>
               <Text>Change theme to light</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logoutBtn} onPress={() => {
-                  navigation.navigate('Login', {})
-                }
-              }>
+            <TouchableOpacity style={styles.logoutBtn} onPress={logoutAction}>
               <Text>Logout</Text>
             </TouchableOpacity>
           </View>
@@ -71,4 +67,4 @@ const mapStateToProps = (state) => ({
   email: state.loginPage.email
 })
 
-export default connect(mapStateToProps, {})(ProfileScreen)
+export default connect(mapStateToProps, {skipPages})(ProfileScreen)
