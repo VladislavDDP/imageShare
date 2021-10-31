@@ -1,5 +1,5 @@
 import React from "react"
-import FormInput from "./FormInput.tsx"
+import FormInput from "./FormInput"
 import { styles } from "../styles/style"
 import { connect } from "react-redux"
 import { View, Text,
@@ -7,7 +7,12 @@ import { View, Text,
 import { login } from "../redux/loginReducer"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-const Login = ({ navigation, ...props }) => {
+type ILoginData = {
+  email: string
+  password: string
+}
+
+const Login = ({ navigation, ...props }: any) => {
   const [isLoading, setLoading] = React.useState(false);
   const [data, setData] = React.useState({
     email: 'eve.holt@reqres.in',
@@ -15,7 +20,7 @@ const Login = ({ navigation, ...props }) => {
   });
   const [error, setError] = React.useState('')
 
-  const validateData = ({email, password}) => {
+  const validateData = ({email, password}: ILoginData) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const passwordRegex = /^\w{8,}$/
     if (!emailRegex.test(email)) {
@@ -46,7 +51,7 @@ const Login = ({ navigation, ...props }) => {
         if (resData.token) {
           props.login(email, password, resData.token)
           navigation.navigate('Main')
-          setError(null)
+          setError('')
         } else {
           Alert.alert('Authentification error!')
         } 
@@ -57,7 +62,7 @@ const Login = ({ navigation, ...props }) => {
     }
   }
 
-  const handleOnTextChange = (value, fieldName) => {
+  const handleOnTextChange = (value: string, fieldName: string) => {
     setData({...data, [fieldName]: value})
   }
 
@@ -72,12 +77,12 @@ const Login = ({ navigation, ...props }) => {
               <FormInput style={styles.input}
                          autoCapitalize='none'
                          placeholder='Email' 
-                         onChangeText={(value) => handleOnTextChange(value, 'email')} 
+                         onChangeText={(value: string) => handleOnTextChange(value, 'email')} 
                          value={data.email} />
               <FormInput style={styles.input}
                          autoCapitalize='none'
                          placeholder='Password'
-                         onChangeText={(value) => handleOnTextChange(value, 'password')}
+                         onChangeText={(value: string) => handleOnTextChange(value, 'password')}
                          secureTextEntry={true} 
                          value={data.password} />
 
@@ -94,6 +99,6 @@ const Login = ({ navigation, ...props }) => {
   )
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state: any) => ({})
 export default connect(mapStateToProps, {login})(Login)
 

@@ -5,7 +5,11 @@ const initialState = {
     page: 1
 }
 
-const feedsReducer = (state=initialState, action) => {
+type IAction = {
+    type: string
+}
+
+const feedsReducer = (state=initialState, action: IAction) => {
     switch(action.type) {
         case LOAD_PAGE:
             return {
@@ -26,13 +30,13 @@ const loadPage = () => ({type: LOAD_PAGE})
 const skipPage = () => ({type: SKIP_PAGE})
 
 export const loadNextPage = () => {
-    return async (dispatch) => {
+    return async (dispatch: Function) => {
         dispatch(loadPage())
     }
 }
 
 export const skipPages = () => {
-    return async (dispatch) => {
+    return async (dispatch: Function) => {
         dispatch(skipPage())
     }
 }

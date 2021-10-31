@@ -9,7 +9,7 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
       console.log('Functionallity will be added in next versions');
     }
 
-    interface IData {
+    type IData = {
       avatar: string
       email: string | null
       first_name: string | null
@@ -25,13 +25,17 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
       id: 1
     });
 
+    interface IResult {
+      data: Array<any>
+    }
     const setProfile = (email: string) => {
       const getUser = async () => {
-        const response1 = await fetch(`https://reqres.in/api/users?page=1`)
-        const response2 = await fetch(`https://reqres.in/api/users?page=2`)
-        const json1 = await response1.json();
-        const json2 = await response2.json();
-        const result = {data: [...json1.data, ...json2.data]}
+        let result: IResult = {data: []}
+        for (let i = 1; i < 3; i++) {
+          const response = await fetch(`https://reqres.in/api/users?page=${i}`)
+          const json = await response.json()
+          result = {data: [...result.data, ...json.data]}
+        }
         const user = result.data.filter( item => {
           return email == item.email;
         })[0]
@@ -71,7 +75,15 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
     );
 }
 
-const mapStateToProps = (state: any) => ({
+type ILoginPage = {
+  email: string
+}
+
+type IState = {
+  loginPage: ILoginPage
+}
+
+const mapStateToProps = (state: IState) => ({
   email: state.loginPage.email
 })
 

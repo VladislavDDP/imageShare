@@ -7,7 +7,14 @@ const initialState = {
     token: null
 }
 
-const loginReducer = (state=initialState, action) => {
+type IAction = {
+    type: string
+    email: string
+    password: string
+    token: string
+}
+
+const loginReducer = (state=initialState, action: IAction) => {
     
     switch(action.type) {
         case LOGIN_ME:
@@ -28,15 +35,15 @@ const loginReducer = (state=initialState, action) => {
             return state
     }
 }
-const loginAC = (email, password, token) => ({type: LOGIN_ME, email, password, token})
+const loginAC = (email: string, password: string, token: string) => ({type: LOGIN_ME, email, password, token})
 const logoutAC = () => ({type: LOGOUT_ME})
 
-export const login = (email, password, token) => {
-    return dispatch => dispatch(loginAC(email, password, token))
+export const login = (email :string, password: string, token: string) => {
+    return (dispatch: Function) => dispatch(loginAC(email, password, token))
 }
 
 export const logout = () => {
-    return dispatch => dispatch(logoutAC())
+    return (dispatch: Function) => dispatch(logoutAC())
 }
 
 export default loginReducer

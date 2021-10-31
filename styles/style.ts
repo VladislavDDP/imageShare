@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: 15
+      marginBottom: 10
     },
     feeds_container: {
       flex: 1,

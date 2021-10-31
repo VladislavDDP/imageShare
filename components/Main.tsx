@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import ProfileScreen from './ProfileScreen.tsx'
+import ProfileScreen from './ProfileScreen'
 import FeedsScreen from './FeedsScreen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../styles/style'
 
 const Tab = createMaterialTopTabNavigator()
 
-function MyTabs(props) {
+function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Feed"
@@ -28,12 +28,15 @@ function MyTabs(props) {
         options={{ tabBarLabel: 'Profile' }}
       />
     </Tab.Navigator>
-  );
+  )
 }
-export default function Main() {
+
+const Main = () => {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <MyTabs />
     </SafeAreaView>
-  );
+  )
 }
+
+export default Main
