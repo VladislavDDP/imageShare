@@ -3,16 +3,29 @@ import React from 'react';
 import { styles } from '../styles/style';
 import { connect } from 'react-redux';
 import { skipPages } from '../redux/feedsReduces';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-const ProfileScreen = ({ navigation, ...props }) => {
+const ProfileScreen = ({ navigation, ...props } : any) => {
     const changeTheme = () => {
       console.log('Functionallity will be added in next versions');
     }
 
-    const [data, setData] = React.useState([]);
+    interface IData {
+      avatar: string
+      email: string | null
+      first_name: string | null
+      last_name: string | null
+      id: number | null
+    }
 
-    const setProfile = (email) => {
+    const [data, setData] = React.useState<IData>({
+      avatar: 'https://blog.logrocket.com/wp-content/uploads/2018/08/complete-guide-default-props-react.jpeg',
+      email: '',
+      first_name: '',
+      last_name: '',
+      id: 1
+    });
+
+    const setProfile = (email: string) => {
       const getUser = async () => {
         const response1 = await fetch(`https://reqres.in/api/users?page=1`)
         const response2 = await fetch(`https://reqres.in/api/users?page=2`)
@@ -40,12 +53,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
     return (
       <View style={styles.profile_view}>
           <View style={styles.user_info}>
-            <Image
-              style={styles.profile_photo}
-              source={{
-                uri: data.avatar? data.avatar : null,
-              }}
-            />
+            <Image style={styles.profile_photo} source={{uri: data.avatar}}/>
             <View style={styles.profile_description}>
               <Text style={styles.white_color}>{data.email}</Text>
               <Text style={styles.white_color}>{data.first_name} {data.last_name}</Text>
@@ -63,7 +71,7 @@ const ProfileScreen = ({ navigation, ...props }) => {
     );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   email: state.loginPage.email
 })
 

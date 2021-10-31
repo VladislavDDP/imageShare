@@ -1,5 +1,5 @@
 import React from "react"
-import FormInput from "./FormInput"
+import FormInput from "./FormInput.tsx"
 import { styles } from "../styles/style"
 import { connect } from "react-redux"
 import { View, Text,
@@ -44,17 +44,13 @@ const Login = ({ navigation, ...props }) => {
       }).then(res => res.json())
       .then(resData => {
         if (resData.token) {
-          console.log(resData.token);
-          console.log(password);
-          console.log(email);
           props.login(email, password, resData.token)
           navigation.navigate('Main')
-          setLoading(false)
           setError(null)
         } else {
-          setLoading(false)
           Alert.alert('Authentification error!')
         } 
+        setLoading(false)
       })
     } else {
       setLoading(false)

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import ProfileScreen from './ProfileScreen'
+import ProfileScreen from './ProfileScreen.tsx'
 import FeedsScreen from './FeedsScreen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../styles/style'

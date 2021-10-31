@@ -6,22 +6,26 @@ import { styles } from '../styles/style'
 
 const FeedsScreen = (props) => {
     const [isLoading, setLoading] = React.useState(true);
+    const [updateLoading, setUpdateLoading] = React.useState(false);
     const [isRefreshing, setIsRefreshing] = React.useState(false)
     const [data, setData] = React.useState([])
     const [page, setPage] = React.useState(1)
 
     const getPhotos = async () => {
       props.loadNextPage()
-      try {
-        const response = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=5`)
-        const json = await response.json()
-        setData(json)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-        setIsRefreshing(false)
-      }
+      setTimeout(async () => {
+        try {
+          const response = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=5`)
+          const json = await response.json()
+          setData([...data, ...json])
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading(false)
+          setIsRefreshing(false)
+          setUpdateLoading(false)
+        }
+      }, 500)
     }
 
     React.useEffect(() => {
@@ -30,23 +34,17 @@ const FeedsScreen = (props) => {
       setPage(props.page + 1)
     }, [])
 
-    const onRefresh = () => {
-      setIsRefreshing(true)
+    const onBottomReached = () => {
+      setUpdateLoading(true)
       setPage(page + 1)
       getPhotos()
     }
 
-    // loading new posts for web browser with button
-    // const loadNextPicsWeb = () => {
-    //   setPage(props.page + 1)
-    //   getPhotos()
-    // }
-
     return (
       <View style={styles.feeds_container}>
-        {isLoading === true ? <ActivityIndicator size="large" color="indigo" /> : (
+        {isLoading === true ? <ActivityIndicator style={styles.loading} size="large" color="indigo" /> : (
           <FlatList
-          onRefresh={onRefresh}
+          onEndReached={onBottomReached}
           refreshing={isRefreshing}
           data={data}
           keyExtractor={({ id }, index) => id}
@@ -58,8 +56,8 @@ const FeedsScreen = (props) => {
               <Text style={styles.photo_description}>{item.author}</Text>
             </View>
             )} />
-        )}
-        {/* <Button title='load more' onPress={loadNextPicsWeb} /> */}
+            )}
+        {updateLoading === true ? <ActivityIndicator style={styles.loading} size="large" color="indigo" /> : null}
       </View>
     )
 }

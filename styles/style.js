@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
       backgroundColor: '#333',
       justifyContent: 'center',
     },
+    loading: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 15
+    },
     feeds_container: {
       flex: 1,
       backgroundColor: '#664E88'
