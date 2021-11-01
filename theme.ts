@@ -1,9 +1,9 @@
 export const darkTheme = {
     mode: 'dark',
-    BACKGROUND_COLOR: 'indigo'
+    BACKGROUND_COLOR: '#664E88'
 }
 
 export const lightTheme = {
     mode: 'light',
-    BACKGROUND_COLOR: '#fff'
+    BACKGROUND_COLOR: '#e8adff'
 }

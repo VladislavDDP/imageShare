@@ -3,9 +3,11 @@ import { Text, View, Image, FlatList, ActivityIndicator, Button } from 'react-na
 import { connect } from 'react-redux'
 import { loadNextPage } from '../redux/feedsReduces'
 import { styles } from '../styles/style'
+import styled, { ThemeProvider } from 'styled-components/native'
+import { useSelector } from 'react-redux'
 
 const FeedsScreen = (props: any) => {
-
+    const theme = useSelector((state: any) => state.themeSwitcher.theme)
     const [isLoading, setLoading] = React.useState(true);
     const [updateLoading, setUpdateLoading] = React.useState(false);
     const [isRefreshing, setIsRefreshing] = React.useState(false)
@@ -42,7 +44,8 @@ const FeedsScreen = (props: any) => {
     }
 
     return (
-      <View style={styles.feeds_container}>
+      <ThemeProvider theme={theme}>
+        <Container>
         {isLoading === true ? <ActivityIndicator style={styles.loading} size="large" color="indigo" /> : (
           <FlatList
           style={{marginBottom: 15}}
@@ -60,7 +63,8 @@ const FeedsScreen = (props: any) => {
             )} />
             )}
         {updateLoading === true ? <ActivityIndicator style={styles.loading} size="small" color="yellow" /> : null}
-      </View>
+        </Container>
+      </ThemeProvider>
     )
 }
 
@@ -77,3 +81,8 @@ const mapStateToProps = (state: IFeed) => ({
 }) 
 
 export default connect(mapStateToProps, {loadNextPage})(FeedsScreen)
+
+const Container = styled.View`
+  flex: 1;
+  background-color: ${(props: any) => props.theme.BACKGROUND_COLOR}
+` 

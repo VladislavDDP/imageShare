@@ -103,6 +103,5 @@ export default connect(mapStateToProps, {skipPages})(ProfileScreen)
 
 const Container = styled.View`
   flex: 1;
-  align-items: center;
   background-color: ${(props: any) => props.theme.BACKGROUND_COLOR}
 ` 
