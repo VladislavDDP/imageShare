@@ -1,13 +1,16 @@
-import { Text, View, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { styles } from '../styles/style';
-import { connect } from 'react-redux';
-import { skipPages } from '../redux/feedsReduces';
+import { Text, Image, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { styles } from '../styles/style'
+import { connect } from 'react-redux'
+import { skipPages } from '../redux/feedsReduces'
+import styled, { ThemeProvider } from 'styled-components/native'
+import { useSelector, useDispatch } from 'react-redux'
+import { switchTheme } from '../redux/themeReducer'
+import { lightTheme, darkTheme } from '../theme'
 
 const ProfileScreen = ({ navigation, ...props } : any) => {
-    const changeTheme = () => {
-      console.log('Functionallity will be added in next versions');
-    }
+    const theme = useSelector((state: any) => state.themeSwitcher.theme)
+    const dispatch = useDispatch()
 
     type IData = {
       avatar: string
@@ -23,7 +26,7 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
       first_name: '',
       last_name: '',
       id: 1
-    });
+    })
 
     interface IResult {
       data: Array<any>
@@ -37,7 +40,7 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
           result = {data: [...result.data, ...json.data]}
         }
         const user = result.data.filter( item => {
-          return email == item.email;
+          return email == item.email
         })[0]
         setData(user)
         return user
@@ -55,23 +58,32 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
     }
 
     return (
-      <View style={styles.profile_view}>
-          <View style={styles.user_info}>
-            <Image style={styles.profile_photo} source={{uri: data.avatar}}/>
-            <View style={styles.profile_description}>
-              <Text style={styles.white_color}>{data.email}</Text>
-              <Text style={styles.white_color}>{data.first_name} {data.last_name}</Text>
+      <ThemeProvider theme={theme}>
+        <Container>
+            <View style={styles.user_info}>
+              <Image style={styles.profile_photo} source={{uri: data.avatar}}/>
+              <View style={styles.profile_description}>
+                <Text style={styles.white_color}>{data.email}</Text>
+                <Text style={styles.white_color}>{data.first_name} {data.last_name}</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.max_width}>
-            <TouchableOpacity style={styles.changeThemeBtn} onPress={changeTheme}>
-              <Text>Change theme to light</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.logoutBtn} onPress={logoutAction}>
-              <Text>Logout</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
+            <View style={styles.max_width}>
+              {theme.mode === 'light'
+                ? 
+                <TouchableOpacity style={styles.changeThemeBtn} onPress={() => dispatch(switchTheme(darkTheme))}>
+                  <Text>Change theme to dark</Text>
+                </TouchableOpacity>
+                : 
+                <TouchableOpacity style={styles.changeThemeBtn} onPress={() => dispatch(switchTheme(lightTheme))}>
+                  <Text>Change theme to light</Text>
+                </TouchableOpacity>
+              }
+              <TouchableOpacity style={styles.logoutBtn} onPress={logoutAction}>
+                <Text>Logout</Text>
+              </TouchableOpacity>
+            </View>
+        </Container>
+      </ThemeProvider>
     );
 }
 
@@ -88,3 +100,9 @@ const mapStateToProps = (state: IState) => ({
 })
 
 export default connect(mapStateToProps, {skipPages})(ProfileScreen)
+
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  background-color: ${(props: any) => props.theme.BACKGROUND_COLOR}
+` 
