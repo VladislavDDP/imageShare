@@ -3,6 +3,7 @@ import React from 'react'
 import { styles } from '../styles/style'
 import { connect } from 'react-redux'
 import { skipPages } from '../redux/feedsReduces'
+import { logout } from '../redux/loginReducer'
 import styled, { ThemeProvider } from 'styled-components/native'
 import { useSelector, useDispatch } from 'react-redux'
 import { switchTheme } from '../redux/themeReducer'
@@ -53,6 +54,7 @@ const ProfileScreen = ({ navigation, ...props } : any) => {
     }, []);
 
     const logoutAction = () => {
+      props.logout()
       navigation.navigate('Login', {})
       props.skipPages()
     }
@@ -99,7 +101,7 @@ const mapStateToProps = (state: IState) => ({
   email: state.loginPage.email
 })
 
-export default connect(mapStateToProps, {skipPages})(ProfileScreen)
+export default connect(mapStateToProps, {skipPages, logout})(ProfileScreen)
 
 const Container = styled.View`
   flex: 1;

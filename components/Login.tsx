@@ -6,6 +6,7 @@ import { View, Text,
          Alert, TouchableOpacity, ActivityIndicator } from "react-native"
 import { login } from "../redux/loginReducer"
 import { SafeAreaView } from "react-native-safe-area-context"
+//import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type ILoginData = {
   email: string
@@ -36,29 +37,9 @@ const Login = ({ navigation, ...props }: any) => {
   const authorize = async () => {
     if (validateData(data)) {
       let {email, password} = data
-      await fetch('https://reqres.in/api/login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          'email': email,
-          'password': password
-        })
-      }).then(res => res.json())
-      .then(resData => {
-        if (resData.token) {
-          props.login(email, password, resData.token)
-          navigation.navigate('Main')
-          setError('')
-        } else {
-          Alert.alert('Authentification error!')
-        } 
-        setLoading(false)
-      })
-    } else {
+      const response = await props.login(email, password)
       setLoading(false)
+      setError('')
     }
   }
 
@@ -68,6 +49,7 @@ const Login = ({ navigation, ...props }: any) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      {props.token ? navigation.navigate('Main') : null}
       <View style={styles.container}>
         {isLoading === true 
         ? <ActivityIndicator size="large" color="indigo" /> 
@@ -99,6 +81,8 @@ const Login = ({ navigation, ...props }: any) => {
   )
 }
 
-const mapStateToProps = (state: any) => ({})
+const mapStateToProps = (state: any) => ({
+  token: state.loginPage.token
+})
 export default connect(mapStateToProps, {login})(Login)
 
