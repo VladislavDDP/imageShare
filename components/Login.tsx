@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import FormInput from "./FormInput"
 import { styles } from "../styles/style"
 import { connect } from "react-redux"
@@ -6,7 +6,9 @@ import { View, Text,
          Alert, TouchableOpacity, ActivityIndicator } from "react-native"
 import { login } from "../redux/loginReducer"
 import { SafeAreaView } from "react-native-safe-area-context"
-//import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const LOGIN_DATA = '@login'
 
 type ILoginData = {
   email: string
@@ -16,10 +18,30 @@ type ILoginData = {
 const Login = ({ navigation, ...props }: any) => {
   const [isLoading, setLoading] = React.useState(false);
   const [data, setData] = React.useState({
-    email: 'eve.holt@reqres.in',
-    password: 'cityslicka'
-  });
+    email: '',
+    password: ''
+  })
   const [error, setError] = React.useState('')
+
+  const storeLoginData = async () => {
+    try {
+      const loginData = JSON.stringify(data)
+      await AsyncStorage.setItem(LOGIN_DATA, loginData)
+    } catch(e) {
+
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const loginData: string | null = await AsyncStorage.getItem(LOGIN_DATA)
+        if (loginData) {
+          setData(JSON.parse(loginData))
+        }
+      } catch(e) {} 
+    })()
+  }, [])
 
   const validateData = ({email, password}: ILoginData) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -38,6 +60,12 @@ const Login = ({ navigation, ...props }: any) => {
     if (validateData(data)) {
       let {email, password} = data
       const response = await props.login(email, password)
+      if (!response) {
+        Alert.alert('Incorrect login or password!')
+      } else {
+        navigation.navigate('Main')
+        storeLoginData()
+      }
       setLoading(false)
       setError('')
     }
@@ -49,7 +77,6 @@ const Login = ({ navigation, ...props }: any) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      {props.token ? navigation.navigate('Main') : null}
       <View style={styles.container}>
         {isLoading === true 
         ? <ActivityIndicator size="large" color="indigo" /> 
@@ -81,8 +108,6 @@ const Login = ({ navigation, ...props }: any) => {
   )
 }
 
-const mapStateToProps = (state: any) => ({
-  token: state.loginPage.token
-})
+const mapStateToProps = (state: any) => ({})
 export default connect(mapStateToProps, {login})(Login)
 

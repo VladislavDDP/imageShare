@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Image, FlatList, ActivityIndicator, Button } from 'react-native'
+import { Text, View, Image, FlatList, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import { loadNextPage } from '../redux/feedsReduces'
 import { styles } from '../styles/style'

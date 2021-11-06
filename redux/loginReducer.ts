@@ -40,7 +40,7 @@ const logoutAC = () => ({type: LOGOUT_ME})
 
 export const login = (email :string, password: string) => {
     return async (dispatch: Function) => {
-        await fetch('https://reqres.in/api/login', {
+        const response = await fetch('https://reqres.in/api/login', {
             method: 'POST',
             headers: {
             'Accept': 'application/json',
@@ -53,6 +53,7 @@ export const login = (email :string, password: string) => {
         })
         .then(res => res.json())
         .then(resData => dispatch(loginAC(email, password, resData.token)))
+        return response.token
     }
 }
 
