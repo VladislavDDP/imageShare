@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
+      fontFamily: 'sans-serif',
       backgroundColor: '#333',
       justifyContent: 'center',
     },

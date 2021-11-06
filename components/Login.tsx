@@ -60,11 +60,15 @@ const Login = ({ navigation, ...props }: any) => {
     if (validateData(data)) {
       let {email, password} = data
       const response = await props.login(email, password)
+      const networkTrouble = setTimeout(() => {
+        setLoading(false)
+      }, 10000)
       if (!response) {
         Alert.alert('Incorrect login or password!')
       } else {
         navigation.navigate('Main')
         storeLoginData()
+        clearTimeout(networkTrouble)
       }
       setLoading(false)
       setError('')

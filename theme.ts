@@ -5,5 +5,5 @@ export const darkTheme = {
 
 export const lightTheme = {
     mode: 'light',
-    BACKGROUND_COLOR: '#e8adff'
+    BACKGROUND_COLOR: '#fff'
 }

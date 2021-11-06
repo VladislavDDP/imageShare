@@ -22,7 +22,6 @@ const FeedsScreen = (props: any) => {
           const json = await response.json()
           setData([...data, ...json])
         } catch (error) {
-          console.error(error)
         } finally {
           setLoading(false)
           setIsRefreshing(false)
